@@ -53,15 +53,18 @@ The request body should be a JSON object with the following fields:
 #### Method: GET
 
 #### Description:
+
 This endpoint retrieves the authenticated user's profile information. Requires a valid JWT token in the request header or cookie.
 
 #### Authentication:
+
 - Bearer Token in Authorization header OR
 - Token in cookie
 
 #### Responses:
 
 ##### Success (200):
+
 - **Status Code**: 200 OK
 - **Response Body**:
   ```json
@@ -84,22 +87,101 @@ This endpoint retrieves the authenticated user's profile information. Requires a
 #### Method: GET
 
 #### Description:
+
 This endpoint logs out the user by clearing the authentication token cookie and blacklisting the current token to prevent reuse.
 
 #### Authentication Required:
+
 - Bearer Token in Authorization header OR
 - Token in cookie
 
 #### Headers:
+
 - `Authorization`: Bearer {token} (optional if using cookie)
 - `Cookie`: token={token} (optional if using Authorization header)
 
 #### Responses:
 
 ##### Success (200):
+
 - **Status Code**: 200 OK
 - **Response Body**:
   ```json
   {
     "message": "Logged out successfully"
   }
+  ```
+
+## Captain Registration Endpoint
+
+### Endpoint: `/captains/register`
+
+#### Method: POST
+
+#### Description:
+
+This endpoint registers a new captain. It validates the input data, hashes the password, creates a new captain in the database, and returns a JSON Web Token (JWT) for authentication.
+
+#### Request Body:
+
+The request body should be a JSON object with the following fields:
+
+- `captain`:(object):
+ - `fullname`:(object)
+  - `firstname`: A string with a minimum length of 3 characters (required)
+  - `lastname`: A string with a minimum length of 3 characters (optional)
+- `email`: A valid email address (required)
+- `password`: A string with a minimum length of 8 characters (required)
+- `vehicle`:(object)
+  - `color`: A string with a minimum length of 3 characters (required)
+  - `plate`: A string with a minimum length of 3 characters (required)
+  - `capacity`: A number, minimum value of 1 (required)
+- `vehicletype`: One of: 'car', 'motorcycle', 'bicycle' (required)
+
+Example Request Body:
+
+```json
+{
+  "fullname": {
+    "firstname": "John_test",
+    "lastname": "Driver_test"
+  },
+  "email": "johnTest.driver@example.com",
+  "password": "password_test",
+  "vehicle": {
+    "color": "test",
+    "plate": "TEST",
+    "capacity": 4,
+    "vehicletype": "TEST"
+  }
+},
+```
+
+## Responses:
+
+## Success (201):
+
+## Status Code: 201 Created
+
+### Response Body:
+
+```json
+{
+  "token": "JWT_TOKEN_HERE",
+  "captain": {
+    "_id": "CAPTAIN_ID",
+    "fullname": {
+      "firstname": "John",
+      "lastname": "Driver"
+    },
+    "email": "john.driver@example.com",
+    "vehicle": {
+      "color": "Black",
+      "plate": "ABC-123",
+      "capacity": 4,
+      "vehicletype": "car"
+    },
+    "status": "active"
+  }
+}
+```
