@@ -185,3 +185,73 @@ Example Request Body:
   }
 }
 ```
+## Captain Login Endpoint
+
+### Endpoint: `/captains/login`
+
+#### Method: POST
+
+#### Description:
+Authenticates a captain and returns JWT token.
+
+#### Request Body:
+```json
+{
+  "email": "john.driver@example.com",
+  "password": "password123"
+}
+```
+## Responses:
+### Success (200):
+```json
+{
+  "token": "JWT_TOKEN_HERE",
+  "captain": {
+    "_id": "CAPTAIN_ID",
+    "fullname": {
+      "firstname": "John",
+      "lastname": "Driver"
+    },
+    "email": "john.driver@example.com",
+    "vehicle": {
+      "color": "Black",
+      "plate": "ABC-123",
+      "capacity": 4,
+      "vehicletype": "car"
+    },
+    "status": "active"
+  }
+}
+```
+## Captain Profile Endpoint
+### Endpoint: /captains/profile
+### Method: GET
+## Authentication:
+Requires valid JWT token in Authorization header or cookie.
+
+### Responses:
+## Success (200):
+```json
+{
+  "captain": {
+    "_id": "CAPTAIN_ID",
+    "fullname": {
+      "firstname": "John",
+      "lastname": "Driver"
+    },
+    "email": "john.driver@example.com",
+    "vehicle": {
+      "color": "Black",
+      "plate": "ABC-123",
+      "capacity": 4,
+      "vehicletype": "car"
+    },
+    "status": "active"
+  }
+}
+```
+## Unauthorized (401):
+```json
+{
+  "message": "Unauthorized"
+}
