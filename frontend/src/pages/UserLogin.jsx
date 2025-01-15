@@ -1,14 +1,30 @@
-import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+import { UserDataContext } from "../context/UserContext";
+import axios from "axios";
 
 const UserLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const [userData, setuserData] = useState({});
-  const FormSubmitHandler = (e) => {
+  const navigate = useNavigate();
+  const { user, setUser } = useContext(UserDataContext);
+
+  const FormSubmitHandler = async (e) => {
     e.preventDefault();
-    setuserData({ email: email, password: password });
+    const newUser = { email: email, password: password };
+    const response = await axios.post(
+      `${import.meta.env.VITE_BASE_URL}/users/login`,
+      newUser
+    );
+
+    if (response.status === 200) {
+      const data = response.data;
+      setUser(data.user);
+      localStorage.setItem("token", data.token);
+      navigate("/home");
+    }
+
     setEmail("");
     setPassword("");
   };
@@ -47,8 +63,8 @@ const UserLogin = () => {
             Login
           </button>
         </form>
-        <span className="flex justify-center pt-1">
-          New here?{" "}
+        <span className="flex justify-center mt-3">
+          New here?
           <NavLink className="text-blue-600 pl-1 " to={"/signup"}>
             Create new Account
           </NavLink>

@@ -2,8 +2,8 @@ import React, { createContext, useState } from 'react';
 
 export const UserDataContext = createContext();
 
-export const UserProvider = ({ children }) => {
-    const [user, setUser] = useState("Working");
+export const UserContext = ({ children }) => {
+    const [user, setUser] = useState({});
 
     return (
         <UserDataContext.Provider value={{ user, setUser }}>
