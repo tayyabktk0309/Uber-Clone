@@ -1,14 +1,37 @@
-import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import axios from "axios";
+import React, { useContext, useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+import { CaptainDataContext } from "../context/CaptainContext";
+import { toast } from "react-toastify";
 
 const CaptainLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const { captain, setCaptain } = useContext(CaptainDataContext);
+  const navigate = useNavigate();
+
   const [captainData, setCaptainData] = useState({});
-  const FormSubmitHandler = (e) => {
+  const FormSubmitHandler = async (e) => {
     e.preventDefault();
-    setCaptainData({ email: email, password: password });
+
+    const captainData = { email: email, password: password };
+    const response = await axios.post(
+      `${import.meta.env.VITE_BASE_URL}/captains/login`,
+      captainData
+    );
+
+    if (response.status === 200) {
+      const data = response.data;
+      setCaptainData(data.captain);
+      localStorage.setItem("token", data.token);
+      navigate("/captain-home");
+      toast.success("Login Successfully.", {
+        pauseOnHover: false,
+        autoClose: 1000,
+      });
+    }
+
     setEmail("");
     setPassword("");
   };

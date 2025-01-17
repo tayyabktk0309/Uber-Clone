@@ -20,6 +20,6 @@ app.get('/',(req, res) => {
     res.send("Hello Backend");
 })
 app.use('/users',userRoutes)
-app.use('/captain',captainsRoutes)
+app.use('/captains',captainsRoutes)
 
 module.exports = app;

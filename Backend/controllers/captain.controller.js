@@ -2,7 +2,7 @@ const captainModel = require("../models/captain.model");
 const captainService = require("../services/captain.service");
 const { validationResult } = require("express-validator");
 const bcrypt = require("bcrypt");
-const BlacklistTokenModel = require("../models/blacklistToken");
+const BlacklistTokenModel = require("../models/blacklisttoken");
 
 
 module.exports.registerCaptain = async (req, res) => {
@@ -12,12 +12,15 @@ module.exports.registerCaptain = async (req, res) => {
   }
 
   try {
+
     const { fullname, email, password, vehicle } =
       req.body;
     const existingCaptain = await captainModel.findOne({email});
+
     if (existingCaptain) {
       return res.status(400).json({ error: "Email already exists" });
     }
+
     const hashPassword = await captainModel.hashPassword(password);
     
     const captain = await captainService.createCaptain({
@@ -30,12 +33,13 @@ module.exports.registerCaptain = async (req, res) => {
       capacity : vehicle.capacity,
       vehicletype : vehicle.vehicletype,
     });
+
     const token = captain.generateAuthToken();
-    res.status(201).json({ token, captain });
+    res.status(200).json({ token, captain });
+
   } catch (error) {
     console.log(error);
-    
-    res.status(400).send(error.message);
+    return res.status(400).send(error.message);
   }
 };
 
