@@ -1,6 +1,6 @@
 import React from "react";
 
-const WaitForDriver = () => {
+const WaitForDriver = ({waitingForDriver}) => {
   return (
     <div>
       <h5 className="text-2xl w-full absolute text-center p-3 top-0 font-bold">

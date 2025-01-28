@@ -17,6 +17,7 @@ const Home = () => {
   const [vehiclePanel, setVehiclePanel] = useState(false);
   const [confirmRidePanel, setconfirmRidePanel] = useState(false);
   const [vehicleFound, setVehicleFound] = useState(false);
+  const [waitingForDriver, setWaitingForDriver] = useState(false)
 
   const panelRef = useRef(null);
 
@@ -78,15 +79,25 @@ const Home = () => {
     function () {
       if (vehicleFound) {
         gsap.to(vehicleFoundPanelRef.current, { y: "0%", duration: 0.5 ,opacity:1});
-        // setInterval(() => {
-        //   gsap.to(vehicleFoundPanelRef.current, { y: "100%", duration: 0.5 ,opacity:0});
-        //   gsap.to(waitingForDriverPanelRef.current, { y: "0%", duration: 0.5 ,opacity:1});
-        // }, 3000);
+        setInterval(() => {
+          gsap.to(vehicleFoundPanelRef.current, { y: "100%", duration: 0.5 ,opacity:0});
+          gsap.to(waitingForDriverPanelRef.current, { y: "0%", duration: 0.5 ,opacity:1});
+        }, 3000);
       } else {
         gsap.to(vehicleFoundPanelRef.current, { y: "100%", duration: 0.5, opacity:0});
       }
     },
     [vehicleFound]
+  );
+  useGSAP(
+    function () {
+      if (waitingForDriver) {
+        gsap.to(waitingForDriverPanelRef.current, { y: "0%", duration: 0.5 ,opacity:1});
+      } else {
+        gsap.to(waitingForDriverPanelRef.current, { y: "100%", duration: 0.5, opacity:0});
+      }
+    },
+    [waitingForDriver]
   );
 
   return (
@@ -99,12 +110,13 @@ const Home = () => {
       <div className="h-full w-full"
        onClick={() => {
         setPanelOpen(false), setVehiclePanel(false), setconfirmRidePanel(false);
-        setVehicleFound(false)
+        setVehicleFound(false),
+        setWaitingForDriver(false)
       }}
       >
         <img
           className="h-screen w-screen object-cover"
-          src="https://elluminatimedia.s3.us-west-2.amazonaws.com/wp-content/uploads/2023/rydex/UberAppSourceCode/drvr1.png"
+          src="https://miro.medium.com/v2/resize:fit:1400/0*gwMx05pqII5hbfmX.gif"
           alt=""
          
         />
@@ -185,8 +197,9 @@ const Home = () => {
       </div>
        <div 
        ref={waitingForDriverPanelRef}
-       className="fixed w-full z-10 bottom-0 translate-y-0 bg-white py-3 ">
+       className="fixed w-full z-10 bottom-0 translate-y-full bg-white py-3 ">
         <WaitForDriver 
+        waitingForDriver={waitingForDriver}
         />
       </div>
     </div>

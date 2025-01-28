@@ -12,6 +12,8 @@ import CaptainHome from "./pages/CaptainHome";
 import Loader from "./components/Loader";
 import CaptainProtectWrap from "./pages/CaptainProtectWrap";
 import CaptainLogout from "./pages/CaptainLogout";
+import Riding from "./pages/Riding";
+import CaptainRiding from "./pages/CaptainRiding";
 
 const CaptainSignup = React.lazy(() => import("./pages/CaptainSignup"));
 const CaptainLogin = React.lazy(() => import("./pages/CaptainLogin"));
@@ -34,6 +36,8 @@ const App = () => {
         />
         <Route path="/login" element={<UserLogin />} />
         <Route path="/signup" element={<UserSignup />} />
+        <Route path="/riding" element={<Riding />} />
+        <Route path="/captain-riding" element={<CaptainRiding />} />
 
         {/* captin routes  */}
         <Route
