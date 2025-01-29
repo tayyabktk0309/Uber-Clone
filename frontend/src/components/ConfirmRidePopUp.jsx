@@ -1,7 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 
 const ConfirmRidePopUp = ({ setConfirmRidePopupPanel, setRidePopupPanel }) => {
+  const [opt, setOpt] = useState('')
+  const submitHandler = (e)=>{
+    e.preventDefault();
+  }
   return (
     <div>
       <h5 className="text-2xl text-center font-bold mb-2">
@@ -61,26 +65,42 @@ const ConfirmRidePopUp = ({ setConfirmRidePopupPanel, setRidePopupPanel }) => {
             </h2>
             <div>
               <h4 className="text-md font-semibold">Description</h4>
-              <p className="text-ms text-gray-500">I am waiting for you plz quickly.</p>
+              <p className="text-ms text-gray-500">
+                I am waiting for you plz quickly.
+              </p>
             </div>
           </div>
         </div>
-        <div className="flex w-full gap-5">
-          <button
-            onClick={() => {
-              setRidePopupPanel(false), setConfirmRidePopupPanel(false);
-            }}
-            className="text-xl flex items-center gap-2 justify-center w-full bg-red-600 text-white py-3 rounded mt-1 font-medium"
-          >
-            Cancel
-          </button>
-          <NavLink
-            to={"/captain-riding"}
-            className="text-xl flex items-center gap-2 justify-center w-full bg-[#8fce00] text-black py-3 rounded mt-1 font-medium"
-          >
-            Confirm
-          </NavLink>
-        </div>
+        <form
+          className="w-full"
+          onSubmit={(e) => {
+            submitHandler(e);
+          }}
+        >
+          <input
+            type="text"
+            placeholder="Enter OTP"
+            className="bg-[#eeee] px-12 py-2 text-base rounded-lg w-full mb-3 outline-none font-bold font-mono text-green-500 uppercase placeholder:font-normal"
+            value={opt}
+            onChange={(e)=>setOpt(e.target.value)}
+          />
+          <div className="flex w-full gap-5">
+            <button
+              onClick={() => {
+                setRidePopupPanel(false), setConfirmRidePopupPanel(false);
+              }}
+              className="text-xl flex items-center gap-2 justify-center w-full bg-red-600 text-white py-3 rounded mt-1 font-medium"
+            >
+              Cancel
+            </button>
+            <NavLink
+              to={"/captain-riding"}
+              className="text-xl flex items-center gap-2 justify-center w-full bg-[#8fce00] text-black py-3 rounded mt-1 font-medium"
+            >
+              Confirm
+            </NavLink>
+          </div>
+        </form>
       </div>
     </div>
   );
